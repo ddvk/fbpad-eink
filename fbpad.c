@@ -349,7 +349,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "fbpad: cannot find fonts\n");
 		return 1;
 	}
-	write(1, hide, strlen(hide));
+	//write(1, hide, strlen(hide));
 	signalsetup();
 	fcntl(0, F_SETFL, fcntl(0, F_GETFL) | O_NONBLOCK);
 	while (args[0] && args[0][0] == '-')

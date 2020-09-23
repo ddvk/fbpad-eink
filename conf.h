@@ -17,9 +17,9 @@
 typedef unsigned short fbval_t;
 
 /* tinyfont files for regular, italic, and bold fonts */
-#define FR		"terminus.tf"
+#define FR		"courr.tf"
 #define FI		NULL
-#define FB		"terminus-bold.tf"
+#define FB		"courr.tf"
 
 /* foreground and background colors */
 #define FGCOLOR		COLOR0

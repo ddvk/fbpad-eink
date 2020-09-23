@@ -4,10 +4,10 @@
 #include <string.h>
 #include "conf.h"
 #include "draw.h"
+#include "FBInk/fbink.h"
 #include "fbpad.h"
 
 #include <stdint.h>
-#include "refresh.h"
 
 static int rows, cols;
 static int fnrows, fncols;
@@ -199,8 +199,9 @@ int pad_refresh(void) {
                  invalid_left * fncols,
                  (invalid_right - invalid_left) * fncols,
                  (invalid_bottom - invalid_top) * fnrows,
-                 0 );
+                 cfg() );
 
+  printf("refreshed");
   invalid_nonempty = 0;
   invalid_top = invalid_bottom = invalid_left = invalid_right = 0;
 }

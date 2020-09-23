@@ -7,7 +7,13 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include "draw.h"
+#include "FBInk/fbink.h"
 
+FBInkConfig fbink_cfg = {0};
+
+FBInkConfig* cfg(){
+    return &fbink_cfg;
+}
 #define MIN(a, b)	((a) < (b) ? (a) : (b))
 #define MAX(a, b)	((a) > (b) ? (a) : (b))
 #define NLEVELS		(1 << 8)
@@ -37,7 +43,7 @@ static void fb_cmap_save(int save)
 	cmap.green = green;
 	cmap.blue = blue;
 	cmap.transp = NULL;
-	ioctl(fd, save ? FBIOGETCMAP : FBIOPUTCMAP, &cmap);
+	//ioctl(fd, save ? FBIOGETCMAP : FBIOPUTCMAP, &cmap);
 }
 
 void fb_cmap(void)
@@ -62,7 +68,7 @@ void fb_cmap(void)
 	cmap.blue = blue;
 	cmap.transp = NULL;
 
-	ioctl(fd, FBIOPUTCMAP, &cmap);
+	//ioctl(fd, FBIOPUTCMAP, &cmap);
 }
 
 unsigned fb_mode(void)
@@ -87,19 +93,29 @@ static void init_colors(void)
 
 int fb_init(char *dev)
 {
-	fd = open(dev, O_RDWR);
+    fd = fbink_open();
 	if (fd < 0)
 		goto failed;
+    //fbink_cfg.is_flashing = true;
+    //fbink_cfg.is_cleared = true;
+    fbink_init(fd, &fbink_cfg);
+
+    FBInkRect cls_rect = { 0 };
 	if (ioctl(fd, FBIOGET_VSCREENINFO, &vinfo) < 0)
           goto failed;
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &finfo) < 0)
           goto failed;
         
+    cls_rect.width = vinfo.xres;
+    cls_rect.height = vinfo.yres;
 	fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
 	bpp = (vinfo.bits_per_pixel + 7) >> 3;
 	fb = mmap(NULL, fb_len(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	if (fb == MAP_FAILED)
 		goto failed;
+    memset(fb, 0, fb_len());
+    //bink_cls(fd,&fbink_cfg, &cls_rect);
+    fbink_refresh(fd,0,0,0,0,&fbink_cfg);
 	init_colors();
 	fb_cmap_save(1);
 	fb_cmap();

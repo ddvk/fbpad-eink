@@ -1,0 +1,36 @@
+[1mdiff --git a/Makefile b/Makefile[m
+[1mindex 52f34f0..939b2c8 100644[m
+[1m--- a/Makefile[m
+[1m+++ b/Makefile[m
+[36m@@ -6,31 +6,6 @@[m
+ #       https://github.com/koreader/koxtoolchain[m
+ # NOTE: We want the "bare" variant of the TC env, to make sure we vendor the right stuff...[m
+ #       i.e., source ~SVN/Configs/trunk/Kindle/Misc/x-compile.sh kobo env bare[m
+[31m-ifdef CROSS_TC[m
+[31m-	# NOTE: If we have a CROSS_TC toolchain w/ CC set to Clang,[m
+[31m-	#       assume we know what we're doing, and that everything is setup the right way already (i.e., via x-compile.sh tc env clang)...[m
+[31m-	ifneq "$(CC)" "clang"[m
+[31m-		CC:=$(CROSS_TC)-gcc[m
+[31m-		CXX:=$(CROSS_TC)-g++[m
+[31m-		STRIP:=$(CROSS_TC)-strip[m
+[31m-		# NOTE: This relies on GCC plugins![m
+[31m-		#       Enforce AR & RANLIB to point to their real binary and not the GCC wrappers if your TC doesn't support that![m
+[31m-		AR:=$(CROSS_TC)-gcc-ar[m
+[31m-		RANLIB:=$(CROSS_TC)-gcc-ranlib[m
+[31m-	endif[m
+[31m-else ifdef CROSS_COMPILE[m
+[31m-	CC:=$(CROSS_COMPILE)cc[m
+[31m-	CXX:=$(CROSS_COMPILE)cxx[m
+[31m-	STRIP:=$(CROSS_COMPILE)strip[m
+[31m-	AR:=$(CROSS_COMPILE)gcc-ar[m
+[31m-	RANLIB:=$(CROSS_COMPILE)gcc-ranlib[m
+[31m-else[m
+[31m-	CC?=gcc[m
+[31m-	CXX?=g++[m
+[31m-	STRIP?=strip[m
+[31m-	AR?=gcc-ar[m
+[31m-	RANLIB?=gcc-ranlib[m
+[31m-endif[m
+ [m
+ DEBUG_CFLAGS:=-Og -fno-omit-frame-pointer -pipe -g[m
+ # Fallback CFLAGS, we honor the env first and foremost![m
