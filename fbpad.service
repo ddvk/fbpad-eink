@@ -1,0 +1,17 @@
+[Unit]
+Description=Simple interactive dialog window
+
+[Service]
+WorkingDirectory=/home/root
+Type=idle
+ExecStart=-/home/root/fbpad /bin/bash
+StandardInput=tty
+TTYPath=/dev/tty0
+TTYReset=yes
+TTYVHangup=yes
+KillMode=process
+IgnoreSIGPIPE=no
+SendSIGHUP=yes
+
+[Install]
+WantedBy=default.target
