@@ -98,7 +98,7 @@ int fb_init(char *dev)
 		goto failed;
     //fbink_cfg.is_flashing = true;
     //fbink_cfg.is_cleared = true;
-    fbink_init(fd, &fbink_cfg);
+    //fbink_init(fd, &fbink_cfg);
 
     FBInkRect cls_rect = { 0 };
 	if (ioctl(fd, FBIOGET_VSCREENINFO, &vinfo) < 0)
@@ -113,9 +113,9 @@ int fb_init(char *dev)
 	fb = mmap(NULL, fb_len(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	if (fb == MAP_FAILED)
 		goto failed;
-    memset(fb, 0, fb_len());
-    //bink_cls(fd,&fbink_cfg, &cls_rect);
-    fbink_refresh(fd,0,0,0,0,&fbink_cfg);
+    //memset(fb, 0, fb_len());
+    //fbink_cls(fd,&fbink_cfg, &cls_rect);
+    //fbink_refresh(fd,0,0,0,0,&fbink_cfg);
 	init_colors();
 	fb_cmap_save(1);
 	fb_cmap();

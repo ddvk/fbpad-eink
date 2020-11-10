@@ -218,12 +218,12 @@ int pad_cols(void)
 
 int pad_font(char *fr, char *fi, char *fb)
 {
-	struct font *r = fr ? font_open(fr) : NULL;
+	struct font *r = embeddefont();
 	if (!r)
 		return 1;
 	fonts[0] = r;
-	fonts[1] = fi ? font_open(fi) : NULL;
-	fonts[2] = fb ? font_open(fb) : NULL;
+	fonts[1] = NULL;
+	fonts[2] = NULL;
 	memset(gc_info, 0, sizeof(gc_info));
 	fnrows = font_rows(fonts[0]);
 	fncols = font_cols(fonts[0]);

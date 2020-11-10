@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "fbpad.h"
+#include "font.h"
 
 struct font {
 	int rows, cols;	/* glyph bitmap rows and columns */
@@ -33,6 +34,23 @@ static void *xread(int fd, int len)
 	free(buf);
 	return NULL;
 }
+struct font *embeddefont(){
+	struct font *font;
+	struct tinyfont head;
+    memcpy(&head, fonts_courr_tf, sizeof(head));
+	font = malloc(sizeof(*font));
+	font->n = head.n;
+	font->rows = head.rows;
+	font->cols = head.cols;
+	font->rows = head.rows;
+	font->glyphs = (int*)(fonts_courr_tf + sizeof(head));
+	font->data =(char*) (fonts_courr_tf + sizeof(head) + font->n * sizeof(int));
+    printf("n %d\n", font->n);
+    printf("cols %d\n", font->cols);
+    printf("rows %d\n", font->rows);
+	return font;
+
+}
 
 struct font *font_open(char *path)
 {
@@ -47,6 +65,9 @@ struct font *font_open(char *path)
 	font->n = head.n;
 	font->rows = head.rows;
 	font->cols = head.cols;
+    printf("n %d\n", font->n);
+    printf("cols %d\n", font->cols);
+    printf("rows %d\n", font->rows);
 	font->glyphs = xread(fd, font->n * sizeof(int));
 	font->data = xread(fd, font->n * font->rows * font->cols);
 	close(fd);
